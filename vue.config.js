@@ -31,10 +31,16 @@ module.exports = {
   productionSourceMap: false,
   devServer: {
     port: port,
-    open: true,
+    // open: true,
     overlay: {
       warnings: false,
       errors: true
+    },
+    proxy: {
+      '/dev-api': {
+        target: 'http://39.98.123.211',
+        pathRewrite: { '^/dev-api': '' }
+      }
     },
     before: require('./mock/mock-server.js')
   },
@@ -87,7 +93,7 @@ module.exports = {
             .plugin('ScriptExtHtmlWebpackPlugin')
             .after('html')
             .use('script-ext-html-webpack-plugin', [{
-            // `runtime` must same as runtimeChunk name. default is `runtime`
+              // `runtime` must same as runtimeChunk name. default is `runtime`
               inline: /runtime\..*\.js$/
             }])
             .end()
